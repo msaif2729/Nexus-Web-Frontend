@@ -8,6 +8,11 @@ export default function HomePage() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
 
+  
+  const ip = process.env.REACT_APP_LOCAL_IP ;
+  const port = process.env.REACT_APP_PORT;
+  
+
   useEffect(() => {
     if (!sessionId) {
       navigate('/');
@@ -16,7 +21,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!ws) {
-      const socket = new WebSocket('ws://192.168.0.105:5000');
+      const socket = new WebSocket(`ws://${ip}:${port}`);
 
       socket.onopen = () => {
         // console.log('WebSocket connected');
@@ -95,7 +100,7 @@ export default function HomePage() {
   };
 
   const confirmLogout = async () => {
-    await fetch('http://192.168.0.105:5000/delete-session', {
+    await fetch(`http://${ip}:${port}/delete-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: sessionId })
@@ -111,6 +116,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#1a1a1a] text-white p-6">
       <div className="max-w-2xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold text-center text-[#7ed1d7]">Resource Sharing Host</h1>
+        <h1 className="text-2xl font-bold text-center text-[#7ed1d7]">CODE : {sessionId}</h1>
+        
 
         <div className="bg-[#2a2a2a] p-6 rounded-xl shadow-lg">
           <h2 className="text-xl font-semibold text-[#7ed1d7] mb-3">Upload File</h2>

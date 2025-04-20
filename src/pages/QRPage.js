@@ -8,10 +8,16 @@ export default function QRPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  
+  const ip = process.env.REACT_APP_LOCAL_IP ;
+  const port = process.env.REACT_APP_PORT;
+  
+
   useEffect(() => {
   if (!sessionId) {
     navigate('/');
   }
+  console.log(ip+":"+port)
 }, []);
 
 
@@ -37,7 +43,7 @@ export default function QRPage() {
     //   console.log(sessionId);
     //   return;
     // }
-    const ws = new WebSocket(`ws://192.168.0.105:5000`);
+    const ws = new WebSocket(`ws://${ip}:${port}`);
     ws.onopen = () => {
       ws.send(JSON.stringify({ type: 'init', sessionId}));
       console.log('[WS] New connection for sessionId:', sessionId);
@@ -98,6 +104,7 @@ export default function QRPage() {
         ) : (
           <p className="text-gray-400">No QR code available</p>
         )}
+        <h1 className="text-1xl font-bold text-center text-[#7ed1d7]">CODE : {sessionId}</h1>
       </div>
     </div>
   );

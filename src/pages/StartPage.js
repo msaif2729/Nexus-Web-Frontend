@@ -8,7 +8,14 @@ export default function StartPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  
+  const ip = process.env.REACT_APP_LOCAL_IP;
+  const port = process.env.REACT_APP_PORT;
+
+  
+
   useEffect(() => {
+    console.log(ip+":"+port)
     const getCookie = (name) => {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -29,7 +36,7 @@ export default function StartPage() {
     const duration = parseInt(input);
     setDuration(duration);
 
-    const res = await fetch('http://192.168.0.105:5000/start-session', {
+    const res = await fetch(`http://${ip}:${port}/start-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ duration })
